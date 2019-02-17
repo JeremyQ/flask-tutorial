@@ -1,7 +1,5 @@
-import os, time
-
+import os
 from flask import Flask
-
 from . import auth, db
 
 
