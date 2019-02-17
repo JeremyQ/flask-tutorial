@@ -12,7 +12,7 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
-        username = request.form['username']
+        username = (request.form['username'])
         password = request.form['password']
         db = get_db()
         error = None
@@ -22,7 +22,7 @@ def register():
         elif not password:
             error = 'Password is required.'
         elif db.execute(
-            'SELECT id FROM user WHERE username = ?', (username,)
+            'SELECT id FROM user WHERE UPPER(username) like UPPER(?)', (username,)
         ).fetchone() is not None:
             error = 'User {} is already registered.'.format(username)
 
@@ -46,7 +46,7 @@ def login():
         db = get_db()
         error = None
         user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
+            'SELECT * FROM user WHERE UPPER(username) like UPPER(?)', (username,)
         ).fetchone()
 
         if user is None:

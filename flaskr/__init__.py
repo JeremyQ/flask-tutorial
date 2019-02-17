@@ -24,18 +24,13 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-
     #register db
     db.init_app(app)
 
     #register auth blueprint
     app.register_blueprint(auth.bp)
 
-    #register blueprint
+    #register blog blueprint
     app.register_blueprint(blog.bp)
     app.add_url_rule('/', endpoint='index')
 
