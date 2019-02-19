@@ -89,3 +89,17 @@ def login_required(view):
 
     return wrapped_view
 
+@bp.route('/delete-user/<string:user_id>', methods=('POST',))
+def delete_logged_in_user(user_id):
+    # user_id = session.get('user_id')
+    error = None
+    db = get_db()
+
+    if user_id is None:
+        error = 'User no user'
+    else:
+        g.user = db.execute(
+            'DELETE FROM user WHERE username LIKE ?', (user_id,)
+        )
+        db.commit()
+    return redirect(url_for('auth.login'))
